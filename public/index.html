@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img {
+            width: 100%;
+        }
+
+        label,
+        input {
+            display: block;
+        }
+    </style>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+    <h1 class="text-center">Hello NodeJS World !</h1>
+    <section class="container mb-3 ">
+
+        <form method="post" action="/api" enctype="application/x-www-form-urlencoded">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input class="form-control" type="text" name="title" id="title">
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <input class="form-control" type="text" name="description" id="description">
+            </div>
+            <div class="mb-3">
+                <label for="src" class="form-label">SRC</label>
+                <input class="form-control" type="text" name="src" id="src">
+            </div>
+            <div class="mb-3">
+                <label for="author" class="form-label">Author</label>
+                <input class="form-control" type="text" name="author" id="author">
+            </div>
+            <input class="btn btn-primary" class="mt-3" type="submit" value="Envoyer">
+        </form>
+
+    </section>
+
+    <main class="container-fluid">
+        <section id="gallery" class="row"></section>
+    </main>
+    <script>
+        showPicture();
+        async function showPicture() {
+            const reponse = await fetch("api?page=1&limit=15");
+            const pictures = await reponse.json();
+
+            pictures.forEach(picture => {
+                // col
+                const col = document.createElement('div');
+                col.classList.add('col12', 'col-sm-6', 'col-md-4', 'mb-1');
+                // card
+                const article = document.createElement('div');
+                article.classList.add('card');
+                article.setAttribute('id', picture.id);
+                // card-img
+                const img = document.createElement('img');
+                img.src = picture.src;
+                img.classList.add('card-img-top', 'img-fluid');
+                img.setAttribute('alt', picture.title);
+                article.appendChild(img);
+                // card-body
+                const body = document.createElement('div'); !
+                    body.classList.add('card-body');
+                const title = document.createElement('h5');
+                title.classList.add('card-title');
+                title.innerText = picture.title;
+                body.appendChild(title);
+                const text = document.createElement('p');
+                text.classList.add('card-text');
+                text.innerText = picture.description;
+                body.appendChild(text);
+                article.appendChild(body);
+                // adding article to col
+                col.appendChild(article);
+                // adding col to gallery
+                document.getElementById('gallery').appendChild(col);
+            });
+
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
